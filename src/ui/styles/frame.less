@@ -1,0 +1,41 @@
+#frame {
+  z-index: 100;
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: @widthFrame;
+  //background: @colormain1;
+  background: @colorsec3;
+  opacity: .9;
+  transition: opacity 0.16s cubic-bezier(0.4, 0, 0.2, 1);
+
+  -webkit-app-region: drag;
+
+  &:hover {
+    opacity: 1;
+  }
+
+
+  #buttons {
+    .button {
+      padding: 3px;
+      margin: 4px;
+      font-size: 2em;
+      text-align: center;
+      -webkit-app-region: no-drag;
+      cursor: pointer;
+      label {
+        cursor: pointer;
+      }
+
+      &:hover {
+        background: @colormain4;
+        &.close {
+          color: @colorRed;
+        }
+      }
+
+    }
+  }
+}

@@ -1,0 +1,6 @@
+/build
+/nwjs-*
+/node_modules
+/old_stuff
+npm-debug.log
+/srcold

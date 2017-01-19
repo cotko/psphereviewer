@@ -1,0 +1,61 @@
+{
+  "name": "SphereViewer",
+  "version": "0.0.1",
+  "description": "A nw.js sphere viewer application",
+  "main": "./build/html/index.html",
+  "chromium-args": "--mixed-context",
+  "js-flags": "--harmony",
+  "scripts": {
+    "devr": "./rundev.sh",
+    "dew": "gulp --watch",
+    "test": "echo \"All ok, yey!:)\" && exit 0"
+  },
+  "keywords": [
+    "google",
+    "sphere",
+    "viewer",
+    "preview",
+    "linux"
+  ],
+  "author": "Cotko",
+  "license": "UNLICENSED",
+  "window": {
+    "id": "sphereviewerwin",
+    "width": 200,
+    "height": 200,
+    "min_width": 200,
+    "min_height": 200,
+    "frame": false
+  },
+  "dependencies": {
+    "@cycle/dom": "^14.3.0",
+    "@cycle/rxjs-run": "^3.3.0",
+    "bluebird": "^3.4.7",
+    "command-exists": "^1.0.2",
+    "exif-reader": "^1.0.2",
+    "font-awesome": "^4.7.0",
+    "i18n": "^0.8.3",
+    "moment": "^2.17.1",
+    "rxjs": "^5.0.2",
+    "sharp": "^0.17.0",
+    "xml2js": "^0.4.17",
+    "xstream": "^9.3.0"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-download": "0.0.1",
+    "gulp-if": "^2.0.2",
+    "gulp-less": "^3.3.0",
+    "gulp-load-plugins": "^1.4.0",
+    "gulp-notify": "^2.2.0",
+    "gulp-pug": "^3.2.0",
+    "gulp-replace": "^0.5.4",
+    "gulp-watch": "^4.3.11",
+    "open-sans-fontface": "^1.4.0",
+    "require-dir": "^0.3.1"
+  }
+}
