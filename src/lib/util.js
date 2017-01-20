@@ -16,10 +16,16 @@ const HMS_POS_MAP = {
 }
 
 let now = moment()
+let current_year = new Date().getFullYear()
 
-setTimeout( () => now = moment(), 60 * 1 * 1000 )
+setTimeout( () => {
+  now = moment(), 60 * 1 * 1000
+  current_year = new Date().getFullYear()
+})
 
 const revealFileDefault = file => NW.nw.Shell.showItemInFolder(file)
+
+export const getCurrentYear = () => current_year
 
 const revealFileInDolphin = file => {
   return execute('dolphin', [
@@ -39,10 +45,10 @@ let revealFile = path => {
   .then( () => revealFile(path) )
 }
 
-export const relativeDate = date => {
+export const relativeDate = (date, fmt='YYYY MMM DD') => {
   let dur = moment.duration(-now.diff(date))
   if(Math.abs(dur.asDays() > 5)) return dur.humanize(true)
-  return moment(date).format('YYYY MMM DD')
+  return moment(date).format(fmt)
 }
 
 export const openUrl = url => NW.nw.Shell.openExternal(url)

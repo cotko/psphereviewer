@@ -27,6 +27,13 @@ require(path.join('..', 'lib', 'i18n'))
   ['en', 'sl']
 )
 
+global.setLocale = locale => {
+  L.setLocale(locale)
+  moment.locale(locale)
+}
+
+setLocale('sl')
+
 global.NW = {
   nw,
   win: nw.Window.get()

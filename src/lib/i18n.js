@@ -57,17 +57,17 @@ export const register = (locales_dir, register_to, locales) => {
 
     // setting of log level DEBUG - default to require('debug')('i18n:debug')
     logDebugFn: function (msg) {
-        console.debug('i18n', msg)
+      console.debug('i18n', msg)
     },
 
     // setting of log level WARN - default to require('debug')('i18n:warn')
     logWarnFn: function (msg) {
-        console.warn('i18n', msg)
+      console.warn('i18n', msg)
     },
 
     // setting of log level ERROR - default to require('debug')('i18n:error')
     logErrorFn: function (msg) {
-        console.error('i18n', msg);
+      console.error('i18n', msg);
     },
 
     // object or [obj1, obj2] to bind the i18n api and current locale to - defaults to null

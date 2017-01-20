@@ -1,14 +1,19 @@
 'use strict'
 const querystring = require('querystring')
 
-import {input, label, img, div} from '@cycle/dom'
-import { relativeDate } from '../lib/util'
+import {span, input, label, img, div} from '@cycle/dom'
+import {
+  relativeDate,
+  getCurrentYear
+} from '../lib/util'
+
+const TAG = 'UI:TOP'
 
 const renderSpheresBar = spheres$ =>
   spheres$.map( spheres =>
     div('#bar', { attrs: {class:'expanded'}}, [
-      renderSpheres(spheres),
-      renderFilter()
+      renderFilter(),
+      renderSpheres(spheres)
     ])
   )
 
@@ -50,7 +55,7 @@ const renderThumbnail = sphere => {
 
 const filterAndNormalizeShperes = (spheres, filter) => spheres
   .filter( s => {
-    if(!filter) return s
+    if(!filter) return true
     // this is also relatively bad.. but let's
     // cache filter text on the fly here directly
     // to shperes
@@ -64,7 +69,20 @@ const filterAndNormalizeShperes = (spheres, filter) => spheres
       .join(' ')
       .toLowerCase()
     }
-    return !!~s._txtfilter.indexOf(filter)
+
+    let returnonsubmatch = !filter.text
+
+    // if number then check the year too
+    if(filter.year.length) {
+      if(!s._year) s._year = s.created_at.getFullYear()
+      if(!~filter.year.indexOf(s._year))
+        return false
+    }
+
+    if(returnonsubmatch) return true
+
+    return !!~s._txtfilter.indexOf(filter.text)
+
   })
   .sort( (s1, s2) => {
     if(s1.created_at < s2.created_at) return -1
@@ -90,13 +108,46 @@ const filterAndNormalizeShperes = (spheres, filter) => spheres
   .spheres
 
 const renderFilter = () =>
-  div('.filter', [
-    input('.filter-input')
+  div('.filter-bar', [
+    div('.filter-container', [
+      input('.filter-input', {
+        attrs: {
+          placeholder: L.t('filter')
+        }
+      }),
+      div('.filter-hint fa fa-info-circle', [
+        div('.hints', [
+          span([
+            L.t('y=%s to filter by year', getCurrentYear())
+          ])
+        ])
+      ])
+    ])
   ])
+
+// handle special filters etc.
+const normalizeFilter = text => {
+  let ret = false
+  if(text) {
+    ret = { year: [] }
+    let year = text.match(/(\s?(y|year)[=|:]\d{4})/g)
+    if(year) {
+      for(let match of year) {
+        text = text.split(match).join('')
+        ret.year.push(
+          (match.split(/[=|:]/).pop()|0)
+        )
+      }
+    }
+    ret.text = text.trim()
+  }
+  console.log(TAG, 'normalizeFilter', ret)
+  return ret
+}
 
 export const top = sources => {
 
-  const filterel = sources.DOM.select('.filter .filter-input')
+  const filterel = sources.DOM.select('.filter-input')
   const filter$ = Rx.Observable
   .merge(
     filterel.events('keydown'),
@@ -108,17 +159,19 @@ export const top = sources => {
     // don't know how to do this with rx..
     // we must delay a bit for cut/paste events
     P.delay(20).then( () =>
-      (
+      _.chain((
         'Escape' !== e.key && _.get(e, 'target.value')
         // this is bad..
         || (e.target.value = '' && '')
-      )
+      ))
       .trim()
-      .toLowerCase()
+      .toLower()
+      .value()
     )
   )
   .startWith('')
   .distinctUntilChanged()
+  .map( normalizeFilter )
 
   const spheres_result$ = Rx.Observable.combineLatest(
     filter$,
