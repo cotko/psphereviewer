@@ -7,7 +7,7 @@ gulp.task(
   () => {
     return gulpPlugs
       .download(conf.src)
-      .pipe( gulp.dest(conf.dest) )
+      .pipe(gulp.dest(conf.dest))
   }
-);
+)
 

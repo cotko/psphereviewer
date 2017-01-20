@@ -18,7 +18,7 @@ const HMS_POS_MAP = {
 let now = moment()
 let current_year = new Date().getFullYear()
 
-setTimeout( () => {
+setTimeout(() => {
   now = moment(), 60 * 1 * 1000
   current_year = new Date().getFullYear()
 })
@@ -37,17 +37,17 @@ const revealFileInDolphin = file => {
 let revealFile = path => {
   // kde - dolphin
   commandExists('dolphin')
-  .then( exists => {
-    if(exists) revealFile = revealFileInDolphin
+  .then(exists => {
+    if (exists) revealFile = revealFileInDolphin
     else revealFile = revealFileDefault
   })
-  .catch( e => revealFile = revealFileDefault )
-  .then( () => revealFile(path) )
+  .catch(e => revealFile = revealFileDefault)
+  .then(() => revealFile(path))
 }
 
-export const relativeDate = (date, fmt='YYYY MMM DD') => {
+export const relativeDate = (date, fmt = 'YYYY MMM DD') => {
   let dur = moment.duration(-now.diff(date))
-  if(Math.abs(dur.asDays() > 5)) return dur.humanize(true)
+  if (Math.abs(dur.asDays() > 5)) return dur.humanize(true)
   return moment(date).format(fmt)
 }
 
@@ -55,16 +55,16 @@ export const openUrl = url => NW.nw.Shell.openExternal(url)
 export const openFile = file => NW.nw.Shell.openItem(file)
 export const revealFileInFolder = file => revealFile(file)
 
-export const traverseDOMForAttr = (el, attr, limit=5) => {
-  if(!el) return false
+export const traverseDOMForAttr = (el, attr, limit = 5) => {
+  if (!el) return false
   let attrdata = el.getAttribute(attr)
-  if(attrdata) return attrdata
-  if(--limit < 0) return false
+  if (attrdata) return attrdata
+  if (--limit < 0) return false
   return traverseDOMForAttr(el.parentElement, attr, limit)
 }
 
 export const hex2dec = ([h, m, s]) => {
-  return h + (m/60) + (s / 3600)
+  return h + (m / 60) + (s / 3600)
 }
 
 // returns duration from - to in [h, m, s]
@@ -78,19 +78,19 @@ export const duration = (from, to) =>
   )
   .format('H*m*s')
   .split('*')
-  .map( _.toInteger )
+  .map(_.toInteger)
 
 export const hmsTime2Label = hms_array =>
   hms_array
-  .reduce( (memo, val, pos) => {
-    if(!val) return memo
-    if(memo.length && val < 9) val = `0${val}`
+  .reduce((memo, val, pos) => {
+    if (!val) return memo
+    if (memo.length && val < 9) val = `0${val}`
     memo.push(`${val}${HMS_POS_MAP[pos]}`)
     return memo
   }, [])
   .join(' ')
 
-export const googleMapsUrlFromSphereData = (sphere, zoom=15, search=true) =>
+export const googleMapsUrlFromSphereData = (sphere, zoom = 15, search = true) =>
   _.chain(sphere)
   .get('exif.gps')
   .pick([
@@ -102,28 +102,26 @@ export const googleMapsUrlFromSphereData = (sphere, zoom=15, search=true) =>
   .toArray()
   // picked coords are in corresponding order
   .chunk(2)
-  .map( pair => [
+  .map(pair => [
       // S and W coords translate to negative decimals
-      ~'SW'.indexOf(pair[1]) && '-' || '',
-      hex2dec(pair[0])
-    ].join('')
+    ~'SW'.indexOf(pair[1]) && '-' || '',
+    hex2dec(pair[0])
+  ].join('')
   )
-  .thru( coords => {
-
+  .thru(coords => {
     // google maps: gmapsurl.com/place/coords/@coords opens a place
-    if(search===true)
+    if (search === true) {
       search = `place/${coords.join(',')}`
+    }
 
     // add zoom level
     coords.push(`${zoom || ''}z`)
-
 
     return [
       GOOGLE_MAPS_URL,
       search || '',
       `@${coords.join(',')}`
     ]
-
   })
   .compact()
   .join('/')

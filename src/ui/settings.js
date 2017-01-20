@@ -2,7 +2,6 @@
 import {p, div, label, input, hr, h1, makeDOMDriver} from '@cycle/dom'
 
 export const settings = sources => {
-
   const vtree$ = Rx.Observable.of(
     div([
       label('kvaje...'),
@@ -12,7 +11,6 @@ export const settings = sources => {
 
   return {
     DOM: vtree$
-    //ACTION: action$
+    // ACTION: action$
   }
-
 }

@@ -22,9 +22,8 @@ const buttons = [{
 }]
 
 export const frame = sources => {
-
   const vtree$ = Rx.Observable.of(
-    div('#buttons', buttons.map( button =>
+    div('#buttons', buttons.map(button =>
       div(
         `.button ${button.action.split(':').pop()}`,
         {attrs: {action: button.action}, key: button.action}, [
@@ -38,11 +37,10 @@ export const frame = sources => {
     .DOM
     .select('.button')
     .events('click')
-    .map( e => e.currentTarget.getAttribute('action') )
+    .map(e => e.currentTarget.getAttribute('action'))
 
   return {
     DOM: vtree$,
     ACTION: action$
   }
-
 }

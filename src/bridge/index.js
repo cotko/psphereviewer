@@ -13,7 +13,7 @@ import {
 } from '../lib/sphere'
 
 import {
-  progress$,
+  progress$
 } from '../lib/progress'
 
 require('../lib/sphere_cache')
@@ -22,15 +22,14 @@ global.findSpheresByFileNameIdentifiers = findSpheresByFileNameIdentifiers
 global.scanForSpheres = scanForSpheres
 global.scanForSpheresMultiDir = scanForSpheresMultiDir
 
-//setTimeout( () => {
+// setTimeout( () => {
 //  console.log('jaaaa??')
 //  progress$.subscribe(
 //    data => console.log('onprogress', data.tag, data.text, data.args)
 //  )
-//}, 300)
+// }, 300)
 
 const selectSphere = ctx => selectSphereById(ctx.id)
-
 
 export const bridge = {
   findSpheresByFileNameIdentifiers,

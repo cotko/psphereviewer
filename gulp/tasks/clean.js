@@ -9,4 +9,4 @@ gulp.task(
       config.dest
     ])
   }
-);
+)

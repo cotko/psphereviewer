@@ -18,4 +18,4 @@ gulp.task(
       )
       .pipe(gulp.dest(conf.dest))
   }
-);
+)

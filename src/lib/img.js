@@ -9,9 +9,9 @@ import { hex2dec } from './util'
 const CANVAS_POOL = []
 
 const releaseCanvas = canvas => {
-  for(let cnv of CANVAS_POOL) {
-    if(canvas === cnv.canvas) {
-      if(!cnv.in_use) {
+  for (let cnv of CANVAS_POOL) {
+    if (canvas === cnv.canvas) {
+      if (!cnv.in_use) {
         console.error('ERR wrong usage, canvas not in use!')
       }
       cnv.in_use = false
@@ -20,10 +20,10 @@ const releaseCanvas = canvas => {
 }
 
 const getCanvas = () => {
-  for(let cnv of CANVAS_POOL) {
-    if(!cnv.in_use) {
+  for (let cnv of CANVAS_POOL) {
+    if (!cnv.in_use) {
       cnv.in_use = true
-  console.log('>> reusing canvas')
+      console.log('>> reusing canvas')
       return cnv.canvas
     }
   }
@@ -39,7 +39,7 @@ const getCanvas = () => {
 }
 
 const getIMGSize = path => {
-  return new P( (res, rej) => {
+  return new P((res, rej) => {
     let img = new Image()
 
     img.onerror = rej
@@ -51,14 +51,13 @@ const getIMGSize = path => {
     }
 
     img.src = path
-
   })
 }
 
 export const downscaleImage = opts => {
   return getIMGSize(opts.src)
-  .then( size => {
-    return new P( res => {
+  .then(size => {
+    return new P(res => {
       let type = opts.type
       let quality = opts.quality
 
@@ -69,14 +68,12 @@ export const downscaleImage = opts => {
       let [cW, cH] = size
 
       type = type || 'image/jpeg'
-      quality = Math.min(1, Math.max(.1, quality || 0.5))
+      quality = Math.min(1, Math.max(0.1, quality || 0.5))
       console.log('kva je ? qualith', quality)
 
-
       tmp.src = opts.src
-      tmp.onload = function() {
-
-        //canvas = document.createElement('canvas')
+      tmp.onload = function () {
+        // canvas = document.createElement('canvas')
         canvas = getCanvas()
 
         cW /= 2
@@ -93,7 +90,7 @@ export const downscaleImage = opts => {
         if (cW <= opts.maxWidth || cH <= opts.maxHeight) {
           res(tmp2.src)
         } else {
-          tmp.src = tmp2.src //recursion
+          tmp.src = tmp2.src // recursion
         }
       }
     })
@@ -102,33 +99,33 @@ export const downscaleImage = opts => {
 
 export const resizeUsingSharp = opts => {
   let image
-  return new P( (res, rej) => {
+  return new P((res, rej) => {
     // TODO: quality etc?
     image = sharp(opts.file)
 
-    //if(opts.size || !(opts.width && opts.height)) {
-      image
+    // if(opts.size || !(opts.width && opts.height)) {
+    image
         .metadata()
-        .then( info => {
+        .then(info => {
           let ret = []
           let size = opts.size || 300
-          if(opts.width && opts.height) ret.push(opts.width, opts.height)
-          else if(info.width > info.height) ret.push(null, size)
+          if (opts.width && opts.height) ret.push(opts.width, opts.height)
+          else if (info.width > info.height) ret.push(null, size)
           else ret.push(size, null)
           ret.push(info)
           res(ret)
         })
-        .catch( rej )
+        .catch(rej)
     //  return
-    //}
-    //res([opts.maxWidth, opts.maxHeight])
+    // }
+    // res([opts.maxWidth, opts.maxHeight])
   })
-  .then( ([ width, height, meta ]) =>
-    new P( (res, rej) =>
+  .then(([ width, height, meta ]) =>
+    new P((res, rej) =>
       image
       .resize(width, height)
-      .toBuffer( (err, buff, info) => {
-        if(err) return rej(err)
+      .toBuffer((err, buff, info) => {
+        if (err) return rej(err)
         res({
           exif: parseExif(meta.exif),
           format: meta.format,
@@ -137,7 +134,7 @@ export const resizeUsingSharp = opts => {
           thumbnail: {
             thumb: `data:image/${info.format};base64,${buff.toString('base64')}`,
             width: info.width,
-            height: info.height,
+            height: info.height
           }
         })
       })
@@ -164,22 +161,22 @@ export const thumbnailSlow = (file, quality, type, width, height) =>
     maxHeight: height || 250
   })
 
-
 export const parseExif = exif => {
-  if(!exif) return false
+  if (!exif) return false
   try {
     let parsed = exifreader(exif)
     let gps = _.get(parsed, 'gps')
-    if(gps) {
+    if (gps) {
       let lat = _.get(gps, 'GPSLatitude')
       let lon = _.get(gps, 'GPSLongitude')
-      if(lat) _.set(gps, 'GPSLatitudeDec', hex2dec(lat))
-      if(lon) _.set(gps, 'GPSLongitudeDec', hex2dec(lon))
+      if (lat) _.set(gps, 'GPSLatitudeDec', hex2dec(lat))
+      if (lon) _.set(gps, 'GPSLongitudeDec', hex2dec(lon))
     }
     // map keys to snake case for each object
     // in parsed exif
-    for(let key of Object.keys(parsed))
-      parsed[key] = _.mapKeys(parsed[key], (val, key) => _.snakeCase(key) )
+    for (let key of Object.keys(parsed)) {
+      parsed[key] = _.mapKeys(parsed[key], (val, key) => _.snakeCase(key))
+    }
     return parsed
   } catch (e) {
     return false

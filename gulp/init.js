@@ -9,12 +9,11 @@ const requireDir = require('require-dir')
 const path = require('path')
 
 exports = module.exports = (conf) => {
-
   let watch = _
     .chain(process.argv)
-    .map( v => v.toLowerCase() )
+    .map(v => v.toLowerCase())
     .indexOf('--watch')
-    .thru( idx => !!~idx )
+    .thru(idx => !!~idx)
     .value()
 
   console.log('runngin gulp, watching:', watch)
@@ -38,7 +37,6 @@ exports = module.exports = (conf) => {
     font: path.join(nmpath, 'open-sans-fontface', 'fonts')
   }
 
-
   global.onError = tag => {
     return err => {
       console.log(err)
@@ -56,7 +54,7 @@ exports = module.exports = (conf) => {
       src: [
         'three.min.js',
         'photo-sphere-viewer.js'
-      ].map( script =>
+      ].map(script =>
         `https://raw.githubusercontent.com/JeremyHeleine/Photo-Sphere-Viewer/master/${script}`
       )
     },
@@ -116,5 +114,4 @@ exports = module.exports = (conf) => {
 
   // require all tasks
   requireDir('./tasks', { recurse: true })
-
 }

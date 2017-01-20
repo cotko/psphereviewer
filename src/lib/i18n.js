@@ -5,17 +5,15 @@ const TAG = 'LNG'
 import { readdirSync } from './fs'
 
 export const register = (locales_dir, register_to, locales) => {
-
   locales = _
     .chain(locales)
     .toArray()
     .concat(
       readdirSync(locales_dir)
-      .map( l => l.split('.json').shift() )
+      .map(l => l.split('.json').shift())
     )
     .uniq()
     .value()
-
 
   console.debug(TAG, 'register locales', locales)
 
@@ -26,10 +24,10 @@ export const register = (locales_dir, register_to, locales) => {
     locales,
 
     // fall back from Dutch to German
-    fallbacks:{'nl': 'de'},
+    fallbacks: {'nl': 'de'},
 
     // you may alter a site wide default locale
-    //defaultLocale: 'de',
+    // defaultLocale: 'de',
 
     // where to store json files - defaults to './locales' relative to modules directory
     directory: locales_dir,
@@ -44,7 +42,7 @@ export const register = (locales_dir, register_to, locales) => {
     syncFiles: true,
 
     // what to use as the indentation unit - defaults to "\t"
-    indent: "\t",
+    indent: '\t',
 
     // setting extension of json files - defaults to '.json' (you might want to set this to '.js' according to webtranslateit)
     extension: '.json',
@@ -67,7 +65,7 @@ export const register = (locales_dir, register_to, locales) => {
 
     // setting of log level ERROR - default to require('debug')('i18n:error')
     logErrorFn: function (msg) {
-      console.error('i18n', msg);
+      console.error('i18n', msg)
     },
 
     // object or [obj1, obj2] to bind the i18n api and current locale to - defaults to null
@@ -76,8 +74,8 @@ export const register = (locales_dir, register_to, locales) => {
     // hash to specify different aliases for i18n's internal methods to apply on the request/response objects (method -> alias).
     // note that this will *not* overwrite existing properties with the same name
     api: {
-      '__': 't',  //now req.__ becomes req.t
-      '__n': 'tn' //and req.__n can be called as req.tn
+      '__': 't',  // now req.__ becomes req.t
+      '__n': 'tn' // and req.__n can be called as req.tn
     },
 
     // Downcase locale when passed on queryParam; e.g. lang=en-US becomes

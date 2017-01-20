@@ -1,7 +1,7 @@
 'use strict'
 const querystring = require('querystring')
 
-import {div, label}  from '@cycle/dom';
+import {div, label} from '@cycle/dom'
 
 import {
   relativeDate,
@@ -17,21 +17,21 @@ import {
 
 const viewSelected = stream$ =>
   stream$
-  .map( selected => _.pick(selected, [
+  .map(selected => _.pick(selected, [
     'id',
     'name', 'parent', 'path',
     'created_at',
     'exif'
   ]))
-  .map( spheredata => {
-    if(!spheredata.id) return label('none')
+  .map(spheredata => {
+    if (!spheredata.id) return label('none')
     let has_gps = _.get(spheredata, 'exif.gps.gps_latitude')
     return div('#selected', {
       attrs: {
         'sphere-id': spheredata.id,
         'sphere-path': spheredata.path
       }
-      }, [
+    }, [
       div('.path', [
         label('.folder', spheredata.parent),
         label('.name', spheredata.name),
@@ -51,18 +51,15 @@ const viewSelected = stream$ =>
     ])
   })
 
-
-
 const getClickForSphere = (selector, tag, DOM) =>
   DOM
   .select(selector)
   .events('click')
-  .map( e => traverseDOMForAttr(e.currentTarget, 'sphere-id') )
-  .filter( s => !!s )
-  .map( id => `${tag}?${querystring.encode({id})}` )
+  .map(e => traverseDOMForAttr(e.currentTarget, 'sphere-id'))
+  .filter(s => !!s)
+  .map(id => `${tag}?${querystring.encode({id})}`)
 
 export const info = sources => {
-
   const action$ = Rx.Observable.merge(
     getClickForSphere('.reveal-file', 'ui:revealfile', sources.DOM),
     getClickForSphere('.open-external', 'ui:openfile', sources.DOM),
@@ -71,17 +68,17 @@ export const info = sources => {
 
   const progress$ = sources
     .progress$
-    .map( evt => {
+    .map(evt => {
       let lbl = evt.args && evt.args.dir ?
         `${evt.args.dir}/${evt.args.file} ${evt.args.spheres}/${evt.args.files}`
         : null
 
-        return lbl
+      return lbl
     })
-    .filter( id => id )
+    .filter(id => id)
 
   const vtree$ = progress$
-  .map( val => {
+  .map(val => {
     return div('#progress', [
       label(val)
     ])
@@ -89,9 +86,8 @@ export const info = sources => {
   .startWith('no process yet')
 
   return {
-    //DOM: vtree$
+    // DOM: vtree$
     DOM: viewSelected(sources.selectedsphere$),
     ACTION: action$
   }
-
 }

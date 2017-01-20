@@ -16,9 +16,10 @@ gulp.task(
         .pipe(gulp.dest(conf.dest))
     }
 
-    if(config.watch)
+    if (config.watch) {
       gulpPlugs.watch(conf.src_watch, run)
+    }
 
     return run()
   }
-);
+)

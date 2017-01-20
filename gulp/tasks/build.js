@@ -3,4 +3,4 @@
 gulp.task(
   'build',
   ['copy', 'babel', 'html', 'styles']
-);
+)

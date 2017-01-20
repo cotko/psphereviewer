@@ -57,5 +57,25 @@
     "gulp-watch": "^4.3.11",
     "open-sans-fontface": "^1.4.0",
     "require-dir": "^0.3.1"
-  }
+  },
+  "standard": {
+    "globals": [
+      "L",
+      "gulp",
+      "gulpPlugs",
+      "_",
+      "config",
+      "NW",
+      "Rx",
+      "moment",
+      "P",
+      "Image",
+      "onError",
+      "nw"
+    ],
+    "ignore": [
+      "src/vendor"
+    ]
+}
+
 }

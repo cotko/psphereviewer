@@ -2,17 +2,13 @@
 
 const path = require('path')
 
-
-import { frame as uiFrame, } from './frame'
+import { frame as uiFrame } from './frame'
 import { info as uiInfo } from './info'
 import { settings as uiSettigns } from './settings'
 import { top as uiTop } from './top'
 import { sphereView } from './sphere'
 
-
 export const main = sources => {
-
-
   let framesource = {
     DOM: sources.frame,
     ACTION: sources.ACTION
@@ -26,7 +22,7 @@ export const main = sources => {
   }
 
   let settingssource = {
-    DOM: sources.settings,
+    DOM: sources.settings
   }
 
   let topsource = {
@@ -39,7 +35,6 @@ export const main = sources => {
     target: document.getElementById('sphereview'),
     selectedsphere$: sources.props.selectedsphere$
   }
-
 
   let frame = uiFrame(framesource)
   let settings = uiSettigns(settingssource)
@@ -58,7 +53,6 @@ export const main = sources => {
       top.ACTION,
       info.ACTION
     )
-    //ACTION: a.ACTION.merge(b.ACTION)
+    // ACTION: a.ACTION.merge(b.ACTION)
   }
-
 }

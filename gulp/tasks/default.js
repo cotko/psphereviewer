@@ -3,4 +3,4 @@
 gulp.task(
   'default',
   ['build']
-);
+)
