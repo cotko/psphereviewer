@@ -8,8 +8,7 @@ import {
 } from './fs'
 
 import {
-  updateProgressTagged,
-  progress$
+  updateProgressTagged
 } from './progress'
 
 import { thumbnailAndExif } from './img'

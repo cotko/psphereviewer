@@ -1,7 +1,7 @@
 'use strict'
 const querystring = require('querystring')
 
-import {span, input, label, img, div} from '@cycle/dom'
+import {span, input, label, div} from '@cycle/dom'
 import {
   relativeDate,
   getCurrentYear

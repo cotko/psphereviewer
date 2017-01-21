@@ -1,5 +1,5 @@
 'use strict'
-import {p, div, label, input, hr, h1, makeDOMDriver} from '@cycle/dom'
+import {p, div, label} from '@cycle/dom'
 
 export const settings = sources => {
   const vtree$ = Rx.Observable.of(

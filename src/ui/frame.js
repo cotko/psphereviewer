@@ -1,5 +1,5 @@
 'use strict'
-import {div, label, input, hr, h1, makeDOMDriver} from '@cycle/dom'
+import {div, label} from '@cycle/dom'
 
 const buttons = [{
   action: 'ui:close',

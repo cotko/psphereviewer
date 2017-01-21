@@ -71,7 +71,9 @@
       "P",
       "Image",
       "onError",
-      "nw"
+      "nw",
+      "setLocale",
+      "PhotoSphereViewer"
     ],
     "ignore": [
       "src/vendor"

@@ -4,7 +4,6 @@ const querystring = require('querystring')
 import {div, label} from '@cycle/dom'
 
 import {
-  relativeDate,
   traverseDOMForAttr
 } from '../lib/util'
 
